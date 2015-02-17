@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE log4j:configuration SYSTEM "log4j.dtd">
+<log4j:configuration xmlns:log4j="http://jakarta.apache.org/log4j/">
+    <appender class="org.apache.log4j.ConsoleAppender" name="console">
+        <param value="System.err" name="target"/>
+        <layout class="org.apache.log4j.PatternLayout">
+            <param value="%d{yy/MM/dd HH:mm:ss} %p %C.%M: %m%n" name="ConversionPattern"/>
+        </layout>
+    </appender>
+    <appender class="org.apache.log4j.DailyRollingFileAppender" name="tailer2kafka">
+        <param value="'.'yyyy-MM-dd" name="DatePattern"/>
+        <param value="/var/tmp/tailer2kafka.log" name="File"/>
+        <layout class="org.apache.log4j.PatternLayout">
+<!--             <param value="[%d{ISO8601}]%5p%6.6r[%t]%x(%F %C.%M:%L) - %m%n" name="ConversionPattern"/> -->
+			<param value="[%d{ISO8601}]%5p%6.6r[%t]%x - %m%n" name="ConversionPattern"/>
+        </layout>
+    </appender>
+    <appender name="async" class="org.apache.log4j.AsyncAppender">
+        <param name="BufferSize" value="500"/>
+        <appender-ref ref="tailer2kafka"/>
+    </appender>
+   
+    <root>
+        <appender-ref ref="async"/>
+        <!--<appender-ref ref="console"/>-->
+        
+    </root>
+
+</log4j:configuration>
